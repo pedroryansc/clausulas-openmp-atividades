@@ -1,7 +1,11 @@
 # Cláusulas do OpenMP - Atividades
 
-1 - A cláusula `private` em uma diretiva do OpenMP define que uma ou mais variáveis especificadas (por exemplo, "num") são privadas. Em outras palavras, isto significa que, na região paralela englobada pela diretiva e pela cláusula, cada thread terá uma cópia local da variável privada, sem que seu valor seja compartilhado entre as threads, ou seja, sem que as alterações em uma thread afete o valor da outra. Exemplo: saida/atividade1.exe
+1 - A cláusula `private` em uma diretiva do OpenMP define que uma ou mais variáveis especificadas (por exemplo, `num`) são privadas. Em outras palavras, isto significa que, na região paralela englobada pela diretiva e pela cláusula, cada thread terá uma cópia local da variável privada `num`, sem que seu valor seja compartilhado entre as threads, ou seja, sem que as alterações em uma thread afete o valor da outra. Exemplo: saida/atividade1.exe
 
 2 - A cláusula `shared` define que uma ou mais variáveis devem ser compartilhadas entre as threads de uma região paralela. Ao contrário da cláusula `private`, a `shared` faz com que as alterações nas variáveis em uma thread tenham efeito em todas as outras threads. Exemplo: saida/atividade2.cpp
 
-3 - A cláusula `firstprivate` é semelhante à cláusula `private`
+3 - A cláusula `firstprivate` é semelhante à cláusula `private`. Ela também cria uma cópia local das variáveis especificadas para cada thread da região paralela, sem que uma afete a outra, mas esta cláusula tem a seguinte diferença: na `private`, é necessário definir o valor da variável privada dentro da região paralela (pois cada cópia começa sem um valor definido). Já na `firstprivate`, cada cópia é inicializada com o valor que a variável privada tinha antes de entrar na região paralela. Exemplo: saida/atividade3.cpp
+
+4 - A cláusula `reduction` cria dentro da região paralela uma cópia local (privada) das variáveis especificadas. O destaque desta cláusula é que ela, ao final da execução da região paralela, executa a uma operação com todas as variáveis especificadas juntas. Por exemplo, se o programa apresentar `reduction(+:num)`, será realizada uma soma entre os valores `num` de todas as threads da região paralela. Um detalhe é que, se a variável `num` = 3 e se forem criadas cópias privadas dela, elas são inicializadas com o valor 0. A soma com o valor 3 será feita apenas após o fim da execução da região paralela. Exemplo: saida/atividade4.cpp
+
+5 - A cláusula `if` define que as instruções da região paralela são só executadas se uma condição especificada for atendida. Exemplo: saida/atividade5.cpp
