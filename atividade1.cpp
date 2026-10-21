@@ -12,9 +12,9 @@ int main(int argc, char *argv[]){
 
     #pragma omp parallel private(numPrivado)
     {
-        numPrivado = 5;
+        numPrivado = 0;
 
-        int numAleatorio = rand() % 101;
+        int numAleatorio = omp_get_thread_num();
 
         int numPrivado = numPrivado + numAleatorio;
 
