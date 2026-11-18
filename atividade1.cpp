@@ -1,23 +1,28 @@
-# include <windows.h>
-# include <assert.h>
-# include <stdio.h>
-# include <omp.h>
-# include <cstdlib>
+#include <stdio.h>
+#include <omp.h>
 
-int main(int argc, char *argv[]){
-    int numPrivado = 0;
+int main(){
+    // A variável "num" é inicializada como 5 na região serial
+    int num = 5;
 
-    // Definindo a quantidade de threads na região paralela como 4
-    omp_set_num_threads(4);
+    printf("\nNumero na regiao serial = %d \n\n", num);
 
-    #pragma omp parallel private(numPrivado)
+    // Definindo "num" como uma variável privada na região paralela, criando uma cópia local dela para cada thread
+    #pragma omp parallel private(num)
     {
-        numPrivado = 0;
+        // Como a cópia de "num" começa com um valor indefinido, ela é definida como 0
+        num = 0;
 
-        int numAleatorio = omp_get_thread_num();
+        int idThread = omp_get_thread_num();
 
-        int numPrivado = numPrivado + numAleatorio;
+        // O próprio "num" recebe a soma dele com o ID da thread.
+        // Isto mostra que, quando uma thread executa esta operação e em seguida outra também executa,
+        // o resultado atribuído a "num" é privado e não interfere na cópia da outra thread
+        num = num + idThread;
 
-        printf("NumAleatorio = %d. NumPrivado = %d \n", numAleatorio, numPrivado);
+        printf("Numero Privado na regiao paralela = %d \n", idThread, num);
     }
+
+    // A cópia original da variável permanece com o seu mesmo valor
+    printf("\nNumero na regiao serial (assim como antes) = %d \n", num);
 }
